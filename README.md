@@ -50,10 +50,10 @@ Key implementation details include:
 ```
 Noteify/
 │
-├── index.html        # Main HTML file
-├── style.css         # App styling and dark mode
-├── script.js         # JavaScript logic (CRUD, LocalStorage, DOM)
-├── assets/           # Icons, logos, images
+├── index       # Main HTML file
+├── css         # App styling and dark mode
+├── js         # JavaScript logic (CRUD, LocalStorage, DOM)
+├── Static/           # Icons, logos, images
 └── README.md         # Documentation
 ```
 
