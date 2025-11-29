@@ -5,65 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noteify - Reset Password</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="../css/forget.css">
 </head>
-<body class="auth-page">
-    <header class="header">
-        <nav class="navbar container">
-            <a href="index.html" class="logo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="currentColor"/>
-                    <path d="M9 10h14M9 16h14M9 22h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                <span>Noteify</span>
-            </a>
-            <div class="nav-links">
-                <a href="login.html" class="nav-link">Login</a>
-                <a href="signup.html" class="btn-primary">Sign Up</a>
-            </div>
-        </nav>
-    </header>
-
-    <main class="auth-main">
-        <div class="auth-container">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <h1 class="auth-title">Reset Password</h1>
-                    <p class="auth-subtitle">Enter your email to receive a reset link</p>
-                </div>
-
-                <form id="forgetForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            class="form-input"
-                            placeholder="you@example.com"
-                            required
-                        >
-                    </div>
-
-                    <button type="submit" class="btn-primary form-button">Send Reset Link</button>
-                </form>
-
-                <div class="auth-links">
-                    <p class="auth-link">
-                        Remember your password? <a href="login.html">Sign in</a>
-                    </p>
-                    <p class="auth-link">
-                        Don't have an account? <a href="signup.html">Sign up</a>
-                    </p>
-                </div>
-            </div>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Noteify</a>
+        <div class="nav-links">
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
         </div>
+    </nav>
+
+    <main class="forgot-page">
+        <section class="forgot-container">
+            <header class="forgot-header">
+                <h1>Forgot Password?</h1>
+                <p>Enter your email to reset your password</p>
+            </header>
+
+            <form id="forgetForm" class="forgot-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <button type="submit" class="btn">Send Reset Link</button>
+            </form>
+
+            <div class="forgot-options">
+                <p>Remembered your password? <a href="login.html">Login</a></p>
+                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+            </div>
+        </section>
     </main>
 
-    <script src="js/forget.js"></script>
+    <footer class="forgot-footer">
+        <div class="footer-content">
+            <span>© 2025 Noteify. All rights reserved.</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Help</a>
+        </div>
+    </footer>
+
+    <script src="../js/forget.js"></script>
 </body>
 </html>
