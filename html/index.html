@@ -1,49 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noteify - Home</title>
-    <link rel="stylesheet" href="../css/index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Bar Example</title>
+
+  <!-- Google Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="script.js"></script>
 </head>
 <body>
 
-<header class="main-header">
-    <nav class="navbar">
-        <a href="index.html" class="logo">Noteify</a>
-        <div class="nav-links">
-            <a href="main.html" class="active">Home</a>
-            <a href="login.html">Login</a>
-            <a href="signup.html">Sign Up</a>
+  <!-- Menu Bar -->
+  <div class="menu-bar">
+    <div class="menu-item">
+      <button>Home</button>
+      <div class="dropdown">
+        <a href="#">New</a>
+        <a href="#">Open</a>
+        <a href="#">Save</a>
+        <a href="#">Exit</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button>Edit</button>
+      <div class="dropdown">
+        <a href="#">Undo</a>
+        <a href="#">Redo</a>
+        <a href="#">Cut</a>
+        <a href="#">Copy</a>
+        <a href="#">Paste</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button>View</button>
+      <div class="dropdown">
+        <a href="#">Zoom In</a>
+        <a href="#">Zoom Out</a>
+        <a href="#">Full-Screen</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button>Note</button>
+      <div class="dropdown">
+        <a href="#">Add Note</a>
+        <a href="#">Edit Note</a>
+        <a href="#">Delete Note</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button>Window</button>
+      <div class="dropdown">
+        <a href="#">Minimize</a>
+        <a href="#">Maximize</a>
+        <a href="#">Close</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button>Tools</button>
+      <div class="dropdown">
+        <a href="#">Options</a>
+        <a href="#">Customize</a>
+        <a href="#">Extensions</a>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <button>Help</button>
+      <div class="dropdown">
+        <a href="#">Documentation</a>
+        <a href="#">About</a>
+        <a href="#">Support</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Layout -->
+  <div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="notify-btn">Notify</button>
+
+      <!-- Search -->
+      <div class="search-box">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Search  Ctrl + K">
+      </div>
+
+      <div class="flex-row">
+        <button class="gray-btn">📖 Note</button>
+        <button class="gray-btn icon-btn">
+          <span class="material-symbols-outlined">more_horiz</span>
+        </button>
+      </div>
+
+      <div class="flex-row">
+        <button class="gray-btn half">📋 Task</button>
+        <button class="gray-btn half">📅 Event</button>
+      </div>
+
+      <a href="#" class="update-btn">♑ Update</a>
+
+      <div class="sidebar-links">
+        <div class="link-item"><span class="material-symbols-outlined">folder</span> Files</div>
+        <div class="link-item"><span class="material-symbols-outlined">calendar_month</span> Calendar</div>
+        <div class="link-item"><span class="material-symbols-outlined">description</span> Templates</div>
+        <div class="link-item"><span class="material-symbols-outlined">note</span> Note Books</div>
+        <div class="link-item"><span class="material-symbols-outlined">label</span> Tags</div>
+      </div>
+
+      <button class="upgrade-btn">
+        <span class="material-symbols-outlined">stat_3</span> Upgrade
+      </button>
+    </aside>
+
+    <!-- Main Area -->
+    <main class="main-content">
+
+      <h2>Your Home</h2>
+      <h3>Notes</h3>
+
+      <!-- Notes List -->
+      <section class="notes-grid">
+
+        <div class="note-card">
+          <h4>Daily Notes</h4>
+          <p>Biology > the term biology comes from the greek which means the study of life.</p>
+          <span class="author">Liyuneh Rstey</span>
         </div>
-    </nav>
-</header>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Welcome to Noteify</h1>
-        <p>Take notes quickly, manage them effortlessly, and keep them safe locally.</p>
-        <a href="signup.html" class="btn">Get Started</a>
-    </div>
-</section>
+        <div class="note-card">
+          <h4>First Note Book</h4>
+          <p>Biology > the term biology comes from the greek which means the study of life.</p>
+          <span class="author">Liyuneh Rstey</span>
+        </div>
 
-<section class="about">
-    <h2>About Noteify</h2>
-    <p>Noteify is a lightweight, offline-friendly note-taking app built with HTML, CSS, and JavaScript. Save notes locally, edit, search, and delete them anytime.</p>
-</section>
+        <div class="note-card">
+          <h4>Second Note Book</h4>
+          <p>Biology > the term biology comes from the greek which means the study of life.</p>
+          <span class="author">Liyuneh Rstey</span>
+        </div>
 
-<footer class="main-footer">
-    <div class="footer-content">
-        <span>© 2025 Noteify. All rights reserved.</span>
-    </div>
-    <div class="footer-links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Help</a>
-    </div>
-</footer>
+      </section>
 
-<script src="../js/index.js"></script>
+      <!-- Scratch Pad -->
+      <section>
+        <h3>Scratch Pad</h3>
+        <div class="scratch-box">
+          <textarea id="scratch-text" placeholder="Write here ...."></textarea>
+          <span class="author">Liyuneh Rstey</span>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Recently Captured -->
+      <section>
+        <h3>Recently Captured</h3>
+        <div class="recent-box">
+          <p>Web Clips</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JS -->
+  
 </body>
 </html>
