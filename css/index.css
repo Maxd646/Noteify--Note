@@ -31,7 +31,7 @@
     --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
     --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
 
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.3s ease-in-out;
     --transition-fast: all 0.15s ease;
     --transition-slow: all 0.5s ease;
 
