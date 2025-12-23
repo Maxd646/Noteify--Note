@@ -1,206 +1,412 @@
-/* RESET */
+/* =========================================================
+   NOTEIFY DESIGN SYSTEM
+========================================================= */
+
+:root {
+  /* Brand */
+  --primary: #2dabff;
+  --primary-dark: #1789ff;
+  --accent: #ffd13d;
+  --danger: #ff3b3b;
+
+  /* Backgrounds */
+  --bg-app: #0d1433;
+  --bg-panel: #121a47;
+  --bg-panel-light: #1b2256;
+  --bg-card: #1f2a63;
+  --bg-input: #1c2557;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Borders & Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  /* Motion */
+  --transition-fast: 0.15s ease;
+  --transition: 0.3s ease;
+}
+
+/* =========================================================
+   RESET & BASE
+========================================================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #0d1433;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* Menu Bar */
-.menu-bar {
-  display: flex;
-  gap: 20px;
-  padding: 10px 20px;
-  background: #101842;
-  border-bottom: 1px solid #2c3460;
-}
-.menu-item button {
-  background: transparent;
-  color: #fff;
-  border: none;
-  cursor: pointer;
+html {
   font-size: 16px;
 }
 
-/* Layout */
-.container {
+body {
+  font-family: "Inter", Arial, sans-serif;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  height: 100vh;
   display: flex;
-  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* Sidebar */
+/* =========================================================
+   TOP MENU BAR
+========================================================= */
+
+.menu-bar {
+  display: flex;
+  gap: 24px;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, #101842, #0f1638);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.menu-item button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-fast);
+}
+
+.menu-item button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: var(--transition-fast);
+}
+
+.menu-item button:hover {
+  color: var(--text-primary);
+}
+
+.menu-item button:hover::after {
+  width: 100%;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.container {
+  display: flex;
+  height: calc(100vh - 56px);
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
 .sidebar {
   width: 260px;
-  background: #121a47;
+  background: var(--bg-panel);
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Notify Button */
 .notify-btn {
-  padding: 15px;
-  background: #1789ff;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   border: none;
-  color: white;
-  border-radius: 12px;
-  cursor: pointer;
+  border-radius: var(--radius-lg);
   font-size: 20px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
+.notify-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+/* Search */
 .search-box {
   display: flex;
   align-items: center;
-  background: #1e2559;
-  padding: 10px;
-  border-radius: 10px;
+  gap: 10px;
+  background: var(--bg-panel-light);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
 }
+
+.search-box:focus-within {
+  outline: 2px solid var(--primary);
+}
+
 .search-box input {
   background: transparent;
   border: none;
-  margin-left: 10px;
-  color: white;
+  color: var(--text-primary);
   outline: none;
+  width: 100%;
 }
 
+/* Buttons */
 .gray-btn {
-  background: #1b2256;
+  background: var(--bg-panel-light);
   color: white;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
+  transition: var(--transition);
 }
+
+.gray-btn:hover {
+  background: var(--bg-card);
+  transform: translateY(-1px);
+}
+
 .full {
   width: 100%;
 }
 
 /* Sidebar Links */
 .sidebar-links {
-  margin-top: 20px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
+
 .link-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 0;
+  padding: 10px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
 }
 
-/* Upgrade Btn */
+.link-item:hover {
+  background: var(--bg-panel-light);
+  color: white;
+}
+
+/* Upgrade */
 .upgrade-btn {
   margin-top: auto;
-  padding: 12px;
-  background: #ffd13d;
+  padding: 14px;
+  background: linear-gradient(135deg, #ffd13d, #ffb703);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
   cursor: pointer;
+  transition: var(--transition);
 }
 
-/* Main Content */
+.upgrade-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
+  animation: fadeIn 0.4s ease;
 }
 
+.main-content h2,
+.main-content h3 {
+  margin-bottom: 12px;
+}
+
+/* Notes Grid */
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
+/* Note Card */
 .note-card {
-  background: #1f2a63;
-  padding: 15px;
-  border-radius: 12px;
+  background: var(--bg-card);
+  padding: 16px;
+  border-radius: var(--radius-lg);
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  animation: popIn 0.3s ease;
 }
+
+.note-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
 .note-card h4 {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
+
 .note-card p {
-  opacity: 0.9;
+  color: var(--text-secondary);
 }
 
-.card-actions {
-  display: flex;
-  justify-content: right;
-  gap: 10px;
-}
+/* =========================================================
+   SCRATCH PAD
+========================================================= */
 
-/* Scratch Pad */
 .scratch-box textarea {
   width: 100%;
-  height: 150px;
-  background: #1c2557;
+  height: 160px;
+  background: var(--bg-input);
   border: none;
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: var(--radius-lg);
+  padding: 14px;
   color: white;
+  resize: none;
+  transition: var(--transition-fast);
 }
 
-/* MODAL */
+.scratch-box textarea:focus {
+  outline: 2px solid var(--primary);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
 .modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  backdrop-filter: blur(4px);
-  background: rgba(0,0,0,0.4);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 0.3s ease;
 }
+
 .hidden {
   display: none;
 }
 
 .modal-content {
-  width: 400px;
-  background: #1f2b63;
-  padding: 20px;
-  border-radius: 12px;
+  width: 420px;
+  background: var(--bg-card);
+  padding: 22px;
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  animation: slideUp 0.35s ease;
 }
 
 .modal-content input,
 .modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  background: #101842;
-  color: white;
+  background: var(--bg-panel-light);
   border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  color: white;
 }
 
 .modal-actions {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 .save-btn {
-  background: #2dabff;
+  background: var(--primary);
   border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
   color: white;
+  cursor: pointer;
 }
 
 .close-btn {
-  background: #ff3b3b;
+  background: var(--danger);
   border: none;
-  padding: 10px 18px;
-  border-radius: 10px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
   color: white;
+  cursor: pointer;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
