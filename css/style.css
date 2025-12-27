@@ -5,7 +5,7 @@ body {
   color: #333;
 }
 
-/* MENU BAR */
+/* Menu Bar */
 .menu-bar {
   display: flex;
   background: #222;
@@ -56,13 +56,13 @@ body {
   color: gold;
 }
 
-/* LAYOUT */
+/* Layout */
 .container {
   display: flex;
   min-height: calc(100vh - 48px);
 }
 
-/* SIDEBAR */
+/* Sidebar */
 .sidebar {
   width: 250px;
   background: #111;
@@ -153,7 +153,7 @@ body {
   cursor: pointer;
 }
 
-/* MAIN CONTENT */
+/* Main Content */
 .main-content {
   flex: 1;
   padding: 30px;

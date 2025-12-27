@@ -1,4 +1,3 @@
-/* Noteify Landing Page Styles */
 :root {
     --primary-color: #2dabff;
     --primary-dark: #1a8cd8;
@@ -90,7 +89,7 @@ body {
     padding: 0 var(--spacing-lg);
 }
 
-/* ENHANCED MENU BAR */
+/* Enhanced Menu Bar */
 .menu-bar {
     display: flex;
     background: rgba(0, 0, 0, 0.8);
@@ -171,13 +170,13 @@ body {
     }
 }
 
-/* LAYOUT */
+/* Layout */
 .container {
     display: flex;
     min-height: calc(100vh - 60px);
 }
 
-/* ENHANCED SIDEBAR */
+/* Enhanced Sidebar */
 .sidebar {
     width: 280px;
     background: var(--bg-secondary);
@@ -336,7 +335,7 @@ body {
     box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
 }
 
-/* ENHANCED MAIN CONTENT */
+/* Enhanced Main Content */
 .main-content {
     flex: 1;
     padding: 32px;
@@ -554,7 +553,7 @@ a:focus {
     outline-offset: 2px;
 }
 
-/* ENHANCED NAVIGATION */
+/* Enhanced Navigation */
 .main-header {
     position: sticky;
     top: 0;
@@ -634,7 +633,7 @@ a:focus {
     font-weight: 600;
 }
 
-/* HERO SECTION */
+/* Hero Section */
 .hero {
     background: var(--bg-gradient);
     color: var(--text-light);
@@ -684,7 +683,7 @@ a:focus {
     flex-wrap: wrap;
 }
 
-/* BUTTONS */
+/* Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -744,7 +743,7 @@ a:focus {
     font-size: var(--font-size-sm);
 }
 
-/* FEATURES SECTION */
+/* Features Section */
 .features {
     padding: var(--spacing-3xl) 0;
     background: var(--bg-primary);
@@ -805,7 +804,7 @@ a:focus {
     line-height: 1.6;
 }
 
-/* DEMO SECTION */
+/* Demo Section */
 .demo-section {
     padding: var(--spacing-3xl) 0;
     background: var(--bg-secondary);
@@ -894,7 +893,7 @@ a:focus {
     font-style: italic;
 }
 
-/* CTA SECTION */
+/* CTA Section */
 .cta-section {
     padding: var(--spacing-3xl) 0;
     background: var(--bg-gradient);
@@ -921,7 +920,7 @@ a:focus {
     flex-wrap: wrap;
 }
 
-/* FOOTER */
+/* Footer */
 .main-footer {
     background: var(--text-primary);
     color: var(--text-light);
@@ -982,7 +981,7 @@ a:focus {
     font-size: var(--font-size-sm);
 }
 
-/* RESPONSIVE DESIGN */
+/* Responsive Design */
 @media (max-width: 768px) {
     .navbar {
         padding: var(--spacing-md) var(--spacing-lg);
@@ -1060,7 +1059,7 @@ a:focus {
     }
 }
 
-/* ACCESSIBILITY */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
@@ -1098,4 +1097,69 @@ a:focus {
 /* Smooth scrolling */
 html {
     scroll-behavior: smooth;
+}
+
+/* User Menu Styles */
+.user-menu {
+    position: relative;
+}
+
+.user-menu-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    font-size: 14px;
+}
+
+.user-menu-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(45, 171, 255, 0.3);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    min-width: 150px;
+    display: none;
+    z-index: 1000;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: var(--transition-fast);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.user-dropdown a:last-child {
+    border-bottom: none;
+}
+
+.user-dropdown a:hover {
+    background-color: var(--bg-secondary);
+}
+
+.user-dropdown a[onclick="logout()"] {
+    color: var(--danger-color);
+}
+
+.user-dropdown a[onclick="logout()"]:hover {
+    background-color: rgba(220, 53, 69, 0.1);
 }
