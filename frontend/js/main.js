@@ -417,3 +417,249 @@ async function logout() {
     setTimeout(() => window.location.href = "index.html", 800);
   }
 }
+
+// ── Profile ────────────────────────────────────────────────────────────────
+
+let pendingAvatar = null;
+const DEFAULT_AVATAR = '../Static/image/profile.png';
+
+function renderAvatar(el, user) {
+  if (!el) return;
+  const src = user.avatar || DEFAULT_AVATAR;
+  const isLg = el.classList.contains('profile-avatar-lg');
+  const size = isLg ? '88px' : '36px';
+  el.innerHTML = `<img src="${src}" alt="Profile" style="width:${size};height:${size};object-fit:cover;display:block;border-radius:50%;" />`;
+}
+
+function syncAllAvatars() {
+  currentUser = StorageManager.getCurrentUser();
+  renderAvatar(document.getElementById('profileAvatar'), currentUser);
+  const lg = document.getElementById('profileAvatarLg');
+  if (lg) renderAvatar(lg, currentUser);
+}
+
+function buildProfileModal() {
+  const overlay = document.createElement('div');
+  overlay.id = 'profileModal';
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(6px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+
+  overlay.innerHTML = `
+    <div style="
+      width: 420px;
+      max-width: 94vw;
+      background: #1f2a63;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.65);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-family: Inter, Arial, sans-serif;
+    ">
+      <!-- Header -->
+      <div style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      ">
+        <span style="font-size:17px; font-weight:600; color:#fff;">Edit Profile</span>
+        <button id="closeProfileBtn" style="
+          width:28px; height:28px; border-radius:50%;
+          border:1px solid rgba(255,255,255,0.15);
+          background:rgba(255,255,255,0.06);
+          color:rgba(255,255,255,0.55); font-size:13px;
+          cursor:pointer; display:flex; align-items:center; justify-content:center;
+          padding:0; transition:0.15s ease;
+        ">&#x2715;</button>
+      </div>
+
+      <!-- Body -->
+      <div style="
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        overflow-y: auto;
+        max-height: 58vh;
+      ">
+        <!-- Avatar -->
+        <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+          <div class="profile-avatar-lg" id="profileAvatarLg" style="
+            width:88px; height:88px; min-width:88px; min-height:88px;
+            border-radius:50%; overflow:hidden;
+            border:3px solid rgba(255,255,255,0.18);
+            background:#1b2256;
+          "></div>
+          <div style="display:flex; gap:10px;">
+            <label for="profileImageInput" style="
+              padding:8px 14px; background:#1b2256;
+              border:1px solid rgba(255,255,255,0.12); border-radius:8px;
+              color:rgba(255,255,255,0.75); font-size:12px; cursor:pointer;
+              transition:0.15s ease;
+            ">Upload Photo</label>
+            <input type="file" id="profileImageInput" accept="image/*" style="display:none;" />
+            <button id="profileRemoveBtn" type="button" style="
+              padding:8px 14px; background:transparent;
+              border:1px solid rgba(255,255,255,0.1); border-radius:8px;
+              color:rgba(255,255,255,0.4); font-size:12px; cursor:pointer;
+              transition:0.15s ease;
+            ">Remove</button>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <label style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.55);">Name</label>
+          <input id="profileNameInput" type="text" placeholder="Your name" style="
+            width:100%; background:#151e4f;
+            border:1px solid rgba(255,255,255,0.1); border-radius:10px;
+            padding:12px 14px; color:#fff; font-size:14px;
+            outline:none; box-sizing:border-box;
+          " />
+        </div>
+
+        <!-- Email -->
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <label style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.55);">Email</label>
+          <input id="profileEmailInput" type="email" placeholder="your@email.com" style="
+            width:100%; background:#151e4f;
+            border:1px solid rgba(255,255,255,0.1); border-radius:10px;
+            padding:12px 14px; color:#fff; font-size:14px;
+            outline:none; box-sizing:border-box;
+          " />
+        </div>
+
+        <!-- Password -->
+        <div style="display:flex; flex-direction:column; gap:7px;">
+          <label style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.55);">
+            New Password
+            <span style="font-size:11px; color:rgba(255,255,255,0.3); font-weight:400;">(leave blank to keep current)</span>
+          </label>
+          <input id="profilePasswordInput" type="password" placeholder="••••••••" style="
+            width:100%; background:#151e4f;
+            border:1px solid rgba(255,255,255,0.1); border-radius:10px;
+            padding:12px 14px; color:#fff; font-size:14px;
+            outline:none; box-sizing:border-box;
+          " />
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div style="
+        display:flex; justify-content:flex-end; gap:10px;
+        padding:18px 24px;
+        border-top:1px solid rgba(255,255,255,0.08);
+      ">
+        <button id="saveProfileBtn" style="
+          background:linear-gradient(135deg,#2dabff,#1789ff);
+          border:none; border-radius:10px;
+          color:#fff; font-size:14px; font-weight:600;
+          padding:11px 22px; cursor:pointer;
+          box-shadow:0 4px 12px rgba(45,171,255,0.3);
+          transition:0.15s ease;
+        ">Save Changes</button>
+        <button id="profileLogoutBtn" type="button" style="
+          background:transparent;
+          border:1px solid rgba(255,255,255,0.15); border-radius:10px;
+          color:rgba(255,255,255,0.6); font-size:14px; font-weight:500;
+          padding:11px 20px; cursor:pointer; transition:0.15s ease;
+        ">Logout</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+function openProfileModal() {
+  currentUser = StorageManager.getCurrentUser();
+  pendingAvatar = null;
+
+  let modal = document.getElementById('profileModal');
+  if (!modal) {
+    modal = buildProfileModal();
+    attachProfileModalEvents(modal);
+  }
+
+  document.getElementById('profileNameInput').value     = currentUser.name  || '';
+  document.getElementById('profileEmailInput').value    = currentUser.email || '';
+  document.getElementById('profilePasswordInput').value = '';
+  renderAvatar(document.getElementById('profileAvatarLg'), currentUser);
+
+  modal.style.display = 'flex';
+}
+
+function attachProfileModalEvents(modal) {
+  const closeModal = () => { modal.style.display = 'none'; };
+
+  document.getElementById('closeProfileBtn').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  document.getElementById('profileImageInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      pendingAvatar = e.target.result;
+      const lg = document.getElementById('profileAvatarLg');
+      lg.innerHTML = `<img src="${pendingAvatar}" alt="Preview" style="width:88px;height:88px;object-fit:cover;display:block;border-radius:50%;" />`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('profileRemoveBtn').addEventListener('click', () => {
+    pendingAvatar = '';
+    const lg = document.getElementById('profileAvatarLg');
+    lg.innerHTML = `<img src="${DEFAULT_AVATAR}" alt="Default" style="width:88px;height:88px;object-fit:cover;display:block;border-radius:50%;" />`;
+  });
+
+  document.getElementById('profileLogoutBtn').addEventListener('click', logout);
+
+  document.getElementById('saveProfileBtn').addEventListener('click', async function () {
+    const name     = document.getElementById('profileNameInput').value.trim();
+    const email    = document.getElementById('profileEmailInput').value.trim();
+    const password = document.getElementById('profilePasswordInput').value;
+
+    if (!name || !email) {
+      UIManager.showNotification('Name and email are required.', 'error');
+      return;
+    }
+
+    const payload = { name, email };
+    if (password)               payload.password = password;
+    if (pendingAvatar !== null)  payload.avatar   = pendingAvatar || null;
+
+    this.disabled    = true;
+    this.textContent = 'Saving...';
+
+    try {
+      const updated = await NoteifyAPI.updateProfile(payload);
+      currentUser = updated;
+      syncAllAvatars();
+      UIManager.showNotification('Profile updated!', 'success');
+      closeModal();
+    } catch (err) {
+      UIManager.showNotification(err.message || 'Update failed.', 'error');
+    } finally {
+      this.disabled    = false;
+      this.textContent = 'Save Changes';
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  syncAllAvatars();
+});
