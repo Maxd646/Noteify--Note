@@ -22,17 +22,14 @@ if (!$id) {
 }
 
 $stmt = $conn->prepare('DELETE FROM notes WHERE id = ? AND user_id = ?');
-$stmt->bind_param('is', $id, $user_id);
+$stmt->bind_param('ii', $id, $user_id);
 $stmt->execute();
 
 if ($stmt->affected_rows === 0) {
     http_response_code(404);
     echo json_encode(['error' => 'Note not found or access denied']);
-    $stmt->close();
-    $conn->close();
-    exit;
+    $stmt->close(); $conn->close(); exit;
 }
-
 $stmt->close();
 $conn->close();
 

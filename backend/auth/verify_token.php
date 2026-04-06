@@ -5,8 +5,16 @@
  * Returns the authenticated user_id (int) or sends 401 and exits.
  */
 function requireAuth($conn) {
-    $headers = getallheaders();
-    $auth    = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    // getallheaders() may not exist on all server configs
+    $auth = '';
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+        $auth    = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    }
+    // Fallback: read directly from $_SERVER
+    if (empty($auth)) {
+        $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+    }
 
     if (!preg_match('/^Bearer\s+(\S+)$/i', $auth, $m)) {
         http_response_code(401);

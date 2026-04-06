@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS notes (
     user_id      INT UNSIGNED  NOT NULL,
     title        VARCHAR(255)  NOT NULL,
     body         TEXT          NOT NULL,
-    tags         JSON          DEFAULT (JSON_ARRAY()),
+    tags         JSON          NOT NULL DEFAULT ('[]'),
     created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     updated_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_user_id (user_id),

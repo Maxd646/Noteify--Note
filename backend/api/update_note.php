@@ -20,36 +20,32 @@ $tags  = $data['tags'] ?? [];
 
 if (!$id || empty($title) || empty($body)) {
     http_response_code(400);
-    echo json_encode(['error' => 'id, title, and body are required']);
+    echo json_encode(['error' => 'id, title and body are required']);
     exit;
 }
 
 $tags_json = json_encode(array_values(array_unique($tags)));
 
 $stmt = $conn->prepare(
-    'UPDATE notes SET title = ?, body = ?, tags = ?, updated_at = NOW()
-     WHERE id = ? AND user_id = ?'
+    'UPDATE notes SET title=?, body=?, tags=?, updated_at=NOW() WHERE id=? AND user_id=?'
 );
-$stmt->bind_param('sssis', $title, $body, $tags_json, $id, $user_id);
+$stmt->bind_param('sssii', $title, $body, $tags_json, $id, $user_id);
 $stmt->execute();
 
-if ($stmt->affected_rows === 0) {
+if ($stmt->affected_rows === -1) {
     http_response_code(404);
     echo json_encode(['error' => 'Note not found or access denied']);
-    $stmt->close();
-    $conn->close();
-    exit;
+    $stmt->close(); $conn->close(); exit;
 }
 $stmt->close();
 
 $stmt = $conn->prepare(
-    'SELECT id, user_id, title, body, tags, created_at, updated_at FROM notes WHERE id = ?'
+    'SELECT id, title, body, tags, created_at, updated_at FROM notes WHERE id = ?'
 );
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $note         = $stmt->get_result()->fetch_assoc();
 $note['tags'] = json_decode($note['tags']) ?? [];
-
 $stmt->close();
 $conn->close();
 
