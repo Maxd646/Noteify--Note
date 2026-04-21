@@ -26,6 +26,13 @@ if (empty($email) || empty($password)) {
 $conn = getConnection();
 
 $stmt = $conn->prepare('SELECT id, name, email, password, avatar FROM users WHERE email = ?');
+$queryError = $conn->error;
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Database query failed. Ensure noteify_db schema is imported. Details: ' . $queryError]);
+    $conn->close();
+    exit;
+}
 $stmt->bind_param('s', $email);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
@@ -45,6 +52,13 @@ $token      = bin2hex(random_bytes(32));
 $expires_at = date('Y-m-d H:i:s', strtotime('+7 days'));
 
 $stmt = $conn->prepare('INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)');
+$queryError = $conn->error;
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Session creation failed. Ensure sessions table exists. Details: ' . $queryError]);
+    $conn->close();
+    exit;
+}
 $stmt->bind_param('iss', $user['id'], $token, $expires_at);
 $stmt->execute();
 $stmt->close();

@@ -267,7 +267,7 @@ Place the project inside your local server directory.
 **Example (XAMPP):**
 
 ```bash
-C:/xampp/htdocs/noteify/
+C:/xampp/htdocs/Noteify--Note/
 ```
 
 ### Step 2: Create Database
@@ -333,7 +333,7 @@ Start services from **XAMPP / Laragon / WAMP**.
 ### Step 6: Open in Browser
 
 ```bash
-http://localhost/noteify/
+http://localhost/Noteify--Note/
 ```
 
 ---
