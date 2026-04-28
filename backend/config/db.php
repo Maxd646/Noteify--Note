@@ -8,7 +8,7 @@ define('DB_CHARSET', 'utf8mb4');
 function getConnection() {
     // Avoid uncaught mysqli_sql_exception producing an empty HTTP body.
     mysqli_report(MYSQLI_REPORT_OFF);
-    $conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
     if (!$conn || $conn->connect_error) {
         http_response_code(500);

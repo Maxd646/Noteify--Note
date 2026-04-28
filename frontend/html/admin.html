@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard </title>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+<link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Noteify Admin</h2>
+    <a href="#"><span class="material-symbols-outlined">dashboard</span> Dashboard</a>
+    <a href="#"><span class="material-symbols-outlined">group</span> Users</a>
+    <a href="#"><span class="material-symbols-outlined">note</span> Notes</a>
+    <a href="#" id="logoutBtn"><span class="material-symbols-outlined">logout</span> Logout</a>
+</div>
+
+<!-- Main -->
+<div class="main">
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <button class="logout" id="logoutTop">Logout</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Users</h3>
+            <p id="userCount">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Notes</h3>
+            <p id="noteCount">0</p>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <h2>Users</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="userTable"></tbody>
+    </table>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>
