@@ -11,13 +11,12 @@ CREATE TABLE IF NOT EXISTS users (
     name         VARCHAR(255)  NOT NULL,
     email        VARCHAR(255)  NOT NULL UNIQUE,
     password     VARCHAR(255)  NOT NULL,          -- bcrypt hash
+    role         ENUM('user','admin') NOT NULL DEFAULT 'user',
     avatar       MEDIUMTEXT    DEFAULT NULL,       -- base64 data URL
     created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     updated_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Migration: add avatar to existing installs
 
 CREATE TABLE IF NOT EXISTS sessions (
     id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
