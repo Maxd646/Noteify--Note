@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noteify — Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="admin-topbar">
+        <span class="admin-logo">Noteify <span class="admin-badge">Admin</span></span>
+        <div class="topbar-right">
+            <span id="adminName" class="admin-user"></span>
+            <button onclick="adminLogout()" class="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav>
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-section="users">
+                    <span class="material-symbols-outlined">group</span> Users
+                </a>
+                <a href="main.html" class="nav-item">
+                    <span class="material-symbols-outlined">notes</span> Notes App
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="admin-main">
+
+            <!-- Dashboard Section -->
+            <section id="section-dashboard" class="admin-section">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="material-symbols-outlined">group</span>
+                        <div>
+                            <p class="stat-label">Total Users</p>
+                            <p class="stat-value" id="statUsers">—</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="material-symbols-outlined">note</span>
+                        <div>
+                            <p class="stat-label">Total Notes</p>
+                            <p class="stat-value" id="statNotes">—</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="material-symbols-outlined">wifi</span>
+                        <div>
+                            <p class="stat-label">Active Sessions</p>
+                            <p class="stat-value" id="statSessions">—</p>
+                        </div>
+                    </div>
+                    <div class="stat-card accent">
+                        <span class="material-symbols-outlined">person_add</span>
+                        <div>
+                            <p class="stat-label">New Users Today</p>
+                            <p class="stat-value" id="statToday">—</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="section-users" class="admin-section hidden">
+                <div class="section-header">
+                    <h2>Users</h2>
+                    <input id="userSearch" type="text" placeholder="Search users..." class="search-input" />
+                </div>
+
+                <div class="table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Notes</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7" class="loading-row">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="../js/modules/api.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>

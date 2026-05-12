@@ -10,9 +10,8 @@
         content="Noteify is a simple, responsive, and interactive note-taking web application that helps you create, edit, delete, and search notes effortlessly.">
 
     <!-- CSS -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="stylesheet" href="../css/index.css">
-    <script type="module" src="../js/firebase-config.js"></script>
 </head>
 
 <body>
@@ -20,13 +19,13 @@
     <header class="main-header">
         <nav class="navbar">
             <a href="index.html" class="logo">Noteify</a>
-            
+
             <div class="nav-toggle" id="navToggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-            
+
             <div class="nav-right">
                 <div class="nav-links" id="navLinks">
                     <a href="index.html" class="active">Home</a>
@@ -35,7 +34,7 @@
                     <a href="login.html">Login</a>
                     <a href="signup.html">Sign Up</a>
                 </div>
-                
+
                 <!-- Theme toggle positioned after nav links -->
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
                     <span class="theme-icon">🌙</span>
@@ -186,6 +185,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="../js/modules/api.js"></script>
     <script src="../js/auth-utils.js"></script>
     <script src="../js/index.js"></script>
 </body>

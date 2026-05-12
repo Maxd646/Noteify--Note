@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$data     = json_decode(file_get_contents('php://input'), true);
+$data     = json_decode(file_get_contents('php://input'), true) ?? [];
 $name     = trim($data['name']     ?? '');
 $email    = trim($data['email']    ?? '');
 $password = trim($data['password'] ?? '');
@@ -40,6 +40,13 @@ $conn = getConnection();
 
 // Check duplicate email
 $stmt = $conn->prepare('SELECT id FROM users WHERE email = ?');
+$queryError = $conn->error;
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Database query failed. Ensure users table exists. Details: ' . $queryError]);
+    $conn->close();
+    exit;
+}
 $stmt->bind_param('s', $email);
 $stmt->execute();
 $stmt->store_result();
@@ -56,6 +63,13 @@ $stmt->close();
 $hash = password_hash($password, PASSWORD_BCRYPT);
 
 $stmt = $conn->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
+$queryError = $conn->error;
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'User creation failed. Ensure users table exists. Details: ' . $queryError]);
+    $conn->close();
+    exit;
+}
 $stmt->bind_param('sss', $name, $email, $hash);
 
 if (!$stmt->execute()) {
@@ -74,6 +88,13 @@ $token      = bin2hex(random_bytes(32));
 $expires_at = date('Y-m-d H:i:s', strtotime('+7 days'));
 
 $stmt = $conn->prepare('INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)');
+$queryError = $conn->error;
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Session creation failed. Ensure sessions table exists. Details: ' . $queryError]);
+    $conn->close();
+    exit;
+}
 $stmt->bind_param('iss', $user_id, $token, $expires_at);
 $stmt->execute();
 $stmt->close();
@@ -84,5 +105,5 @@ echo json_encode([
     'success'    => true,
     'token'      => $token,
     'expires_at' => $expires_at,
-    'user'       => ['id' => $user_id, 'name' => $name, 'email' => $email]
+    'user'       => ['id' => $user_id, 'name' => $name, 'email' => $email, 'avatar' => null]
 ]);

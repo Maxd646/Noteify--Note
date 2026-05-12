@@ -13,10 +13,10 @@ $conn    = getConnection();
 $user_id = requireAuth($conn);
 
 $stmt = $conn->prepare(
-    'SELECT id, user_id, title, body, tags, created_at, updated_at
+    'SELECT id, title, body, tags, created_at, updated_at
      FROM notes WHERE user_id = ? ORDER BY updated_at DESC'
 );
-$stmt->bind_param('s', $user_id);
+$stmt->bind_param('i', $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -25,7 +25,6 @@ while ($row = $result->fetch_assoc()) {
     $row['tags'] = json_decode($row['tags']) ?? [];
     $notes[]     = $row;
 }
-
 $stmt->close();
 $conn->close();
 

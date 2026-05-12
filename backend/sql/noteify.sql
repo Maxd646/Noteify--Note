@@ -1,5 +1,4 @@
 -- Noteify Database Schema
--- Run this in phpMyAdmin or MySQL CLI
 
 CREATE DATABASE IF NOT EXISTS noteify_db
     CHARACTER SET utf8mb4
@@ -12,6 +11,8 @@ CREATE TABLE IF NOT EXISTS users (
     name         VARCHAR(255)  NOT NULL,
     email        VARCHAR(255)  NOT NULL UNIQUE,
     password     VARCHAR(255)  NOT NULL,          -- bcrypt hash
+    role         ENUM('user','admin') NOT NULL DEFAULT 'user',
+    avatar       MEDIUMTEXT    DEFAULT NULL,       -- base64 data URL
     created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     updated_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_email (email)
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS notes (
     user_id      INT UNSIGNED  NOT NULL,
     title        VARCHAR(255)  NOT NULL,
     body         TEXT          NOT NULL,
-    tags         JSON          DEFAULT (JSON_ARRAY()),
+    tags         JSON          NOT NULL DEFAULT ('[]'),
     created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
     updated_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_user_id (user_id),

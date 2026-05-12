@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noteify - Sign Up</title>
     <link rel="stylesheet" href="../css/signup.css">
@@ -12,11 +11,7 @@
 <body>
     <nav class="navbar">
         <a href="index.html" class="logo">Noteify</a>
-        <div class="nav-toggle" id="navToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
         <div class="nav-links" id="navLinks">
             <a href="login.html">Login</a>
             <a href="signup.html" class="active">Sign Up</a>
@@ -44,11 +39,11 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" placeholder="At least 6 characters" required>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                    <input type="password" id="confirm-password" placeholder="Repeat your password" required>
                 </div>
                 <button type="submit" class="btn">Create Account</button>
             </form>
@@ -60,9 +55,7 @@
     </main>
 
     <footer class="signup-footer">
-        <div class="footer-content">
-            <span>© 2025 Noteify. All rights reserved.</span>
-        </div>
+        <div class="footer-content"><span>© 2026 Noteify. All rights reserved.</span></div>
         <div class="footer-links">
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
@@ -70,6 +63,7 @@
         </div>
     </footer>
 
+    <script src="../js/modules/api.js"></script>
     <script src="../js/auth-utils.js"></script>
     <script src="../js/signup.js"></script>
 </body>
