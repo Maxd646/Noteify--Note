@@ -411,32 +411,20 @@ function exportNotes() {
 
 async function logout() {
   if (confirm("Are you sure you want to logout?")) {
-    try {
-      // Save scratch pad before logout
-      if (scratchPad) {
-        StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
-      }
-      
-      // Use the global Firebase logout function
-      if (window.performLogout) {
-        await window.performLogout();
-      } else {
-        // Fallback if global function not available
-        StorageManager.removeCurrentUser();
-      }
+    if (scratchPad) StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
 
-      UIManager.showNotification("Logged out successfully!", "success");
-
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1000);
-      
-    } catch (error) {
-      console.error('Main page logout error:', error);
-      // Even if Firebase logout fails, remove from localStorage
-      StorageManager.removeCurrentUser();
-      UIManager.showNotification("Logged out successfully!", "success");
-      setTimeout(() => window.location.href = "index.html", 1000);
+    const token = localStorage.getItem('noteify_token');
+    if (token) {
+      await fetch('/backend/auth/logout.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      }).catch(() => {});
     }
+
+    localStorage.removeItem('noteify_token');
+    StorageManager.removeCurrentUser();
+    UIManager.showNotification("Logged out successfully!", "success");
+    setTimeout(() => window.location.href = "index.html", 1000);
   }
 }

@@ -74,29 +74,18 @@ function setupUserMenuEvents() {
 
 async function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        try {
-            // Use the global logout function
-            if (window.performLogout) {
-                await window.performLogout();
-            } else {
-                // Fallback if global function not available
-                localStorage.removeItem('currentUser');
-            }
-            
-            showNotification('Logged out successfully!', 'success');
-            
-            // Force navigation update
-            updateNavigationForAuth();
-            
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1000);
-        } catch (error) {
-            console.error('Logout error:', error);
-            localStorage.removeItem('currentUser');
-            showNotification('Logged out successfully!', 'success');
-            setTimeout(() => window.location.href = 'index.html', 1000);
+        const token = localStorage.getItem('noteify_token');
+        if (token) {
+            await fetch('/backend/auth/logout.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            }).catch(() => {});
         }
+        localStorage.removeItem('noteify_token');
+        localStorage.removeItem('currentUser');
+        showNotification('Logged out successfully!', 'success');
+        setTimeout(() => window.location.href = 'index.html', 1000);
     }
 }
 
