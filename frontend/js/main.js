@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Check if user is logged in
   currentUser = StorageManager.getCurrentUser();
 
-  if (!currentUser || !localStorage.getItem('noteify_token')) {
+  if (!currentUser || !localStorage.getItem("noteify_token")) {
     UIManager.showNotification("Please login first", "error");
     window.location.href = "login.html";
     return;
@@ -99,7 +99,7 @@ function setupEventListeners() {
       "input",
       UIManager.debounce(() => {
         StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
-      }, 1000)
+      }, 1000),
     );
   }
 
@@ -135,7 +135,7 @@ function setupEventListeners() {
   if (closeTemplatesBtn) {
     closeTemplatesBtn.addEventListener(
       "click",
-      TemplatesManager.closeTemplatesModal
+      TemplatesManager.closeTemplatesModal,
     );
   }
 
@@ -189,7 +189,7 @@ function saveNote() {
     notes[editingIndex] = NotesManager.updateNote(
       notes[editingIndex],
       title,
-      body
+      body,
     );
     UIManager.showNotification("Note updated successfully!", "success");
   }
@@ -400,7 +400,7 @@ function exportNotes() {
   const exportData = StorageManager.exportNotes(
     currentUser.id,
     currentUser.name,
-    notes
+    notes,
   );
   const filename =
     "noteify-export-" + new Date().toISOString().split("T")[0] + ".json";
@@ -411,53 +411,48 @@ function exportNotes() {
 
 async function logout() {
   if (confirm("Are you sure you want to logout?")) {
-    if (scratchPad) StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
-<<<<<<< HEAD
+    if (scratchPad)
+      StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
 
-    const token = localStorage.getItem('noteify_token');
+    const token = localStorage.getItem("noteify_token");
     if (token) {
-      await fetch('/backend/auth/logout.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
+      await fetch("/backend/auth/logout.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
       }).catch(() => {});
     }
 
-    localStorage.removeItem('noteify_token');
+    localStorage.removeItem("noteify_token");
     StorageManager.removeCurrentUser();
     UIManager.showNotification("Logged out successfully!", "success");
-    setTimeout(() => window.location.href = "index.html", 1000);
-=======
-    await NoteifyAPI.logout();
-    UIManager.showNotification("Logged out successfully!", "success");
-    setTimeout(() => window.location.href = "index.html", 800);
->>>>>>> 654acac9c41e5730f229189409047243c37e606b
+    setTimeout(() => (window.location.href = "index.html"), 1000);
   }
 }
 
 // ── Profile ────────────────────────────────────────────────────────────────
 
-let pendingAvatar = null;
-const DEFAULT_AVATAR = '../Static/image/profile.png';
+let pendingAvatarFile = null;
+const DEFAULT_AVATAR = "../Static/image/profile.png";
 
 function renderAvatar(el, user) {
   if (!el) return;
   const src = user.avatar || DEFAULT_AVATAR;
-  const isLg = el.classList.contains('profile-avatar-lg');
-  const size = isLg ? '88px' : '36px';
+  const isLg = el.classList.contains("profile-avatar-lg");
+  const size = isLg ? "88px" : "36px";
   el.innerHTML = `<img src="${src}" alt="Profile" style="width:${size};height:${size};object-fit:cover;display:block;border-radius:50%;" />`;
 }
 
 function syncAllAvatars() {
   currentUser = StorageManager.getCurrentUser();
-  renderAvatar(document.getElementById('profileAvatar'), currentUser);
-  const lg = document.getElementById('profileAvatarLg');
+  renderAvatar(document.getElementById("profileAvatar"), currentUser);
+  const lg = document.getElementById("profileAvatarLg");
   if (lg) renderAvatar(lg, currentUser);
 }
 
 function buildProfileModal() {
-  const overlay = document.createElement('div');
-  overlay.id = 'profileModal';
+  const overlay = document.createElement("div");
+  overlay.id = "profileModal";
   overlay.style.cssText = `
     position: fixed;
     top: 0; left: 0;
@@ -603,80 +598,91 @@ function buildProfileModal() {
 
 function openProfileModal() {
   currentUser = StorageManager.getCurrentUser();
-  pendingAvatar = null;
+  pendingAvatarFile = null;
 
-  let modal = document.getElementById('profileModal');
+  let modal = document.getElementById("profileModal");
   if (!modal) {
     modal = buildProfileModal();
     attachProfileModalEvents(modal);
   }
 
-  document.getElementById('profileNameInput').value     = currentUser.name  || '';
-  document.getElementById('profileEmailInput').value    = currentUser.email || '';
-  document.getElementById('profilePasswordInput').value = '';
-  renderAvatar(document.getElementById('profileAvatarLg'), currentUser);
+  document.getElementById("profileNameInput").value = currentUser.name || "";
+  document.getElementById("profileEmailInput").value = currentUser.email || "";
+  document.getElementById("profilePasswordInput").value = "";
+  renderAvatar(document.getElementById("profileAvatarLg"), currentUser);
 
-  modal.style.display = 'flex';
+  modal.style.display = "flex";
 }
 
 function attachProfileModalEvents(modal) {
-  const closeModal = () => { modal.style.display = 'none'; };
+  const closeModal = () => {
+    modal.style.display = "none";
+  };
 
-  document.getElementById('closeProfileBtn').addEventListener('click', closeModal);
-  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-
-  document.getElementById('profileImageInput').addEventListener('change', function () {
-    const file = this.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      pendingAvatar = e.target.result;
-      const lg = document.getElementById('profileAvatarLg');
-      lg.innerHTML = `<img src="${pendingAvatar}" alt="Preview" style="width:88px;height:88px;object-fit:cover;display:block;border-radius:50%;" />`;
-    };
-    reader.readAsDataURL(file);
+  document
+    .getElementById("closeProfileBtn")
+    .addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
   });
 
-  document.getElementById('profileRemoveBtn').addEventListener('click', () => {
-    pendingAvatar = '';
-    const lg = document.getElementById('profileAvatarLg');
+  document
+    .getElementById("profileImageInput")
+    .addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+      pendingAvatarFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const lg = document.getElementById("profileAvatarLg");
+        lg.innerHTML = `<img src="${e.target.result}" alt="Preview" style="width:88px;height:88px;object-fit:cover;display:block;border-radius:50%;" />`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+  document.getElementById("profileRemoveBtn").addEventListener("click", () => {
+    pendingAvatarFile = null;
+    document.getElementById("profileImageInput").value = "";
+    const lg = document.getElementById("profileAvatarLg");
     lg.innerHTML = `<img src="${DEFAULT_AVATAR}" alt="Default" style="width:88px;height:88px;object-fit:cover;display:block;border-radius:50%;" />`;
   });
 
-  document.getElementById('profileLogoutBtn').addEventListener('click', logout);
+  document.getElementById("profileLogoutBtn").addEventListener("click", logout);
 
-  document.getElementById('saveProfileBtn').addEventListener('click', async function () {
-    const name     = document.getElementById('profileNameInput').value.trim();
-    const email    = document.getElementById('profileEmailInput').value.trim();
-    const password = document.getElementById('profilePasswordInput').value;
+  document
+    .getElementById("saveProfileBtn")
+    .addEventListener("click", async function () {
+      const name = document.getElementById("profileNameInput").value.trim();
+      const email = document.getElementById("profileEmailInput").value.trim();
+      const password = document.getElementById("profilePasswordInput").value;
 
-    if (!name || !email) {
-      UIManager.showNotification('Name and email are required.', 'error');
-      return;
-    }
+      if (!name || !email) {
+        UIManager.showNotification("Name and email are required.", "error");
+        return;
+      }
 
-    const payload = { name, email };
-    if (password)               payload.password = password;
-    if (pendingAvatar !== null)  payload.avatar   = pendingAvatar || null;
+      const payload = { name, email };
+      if (password) payload.password = password;
+      if (pendingAvatarFile) payload.avatarFile = pendingAvatarFile;
 
-    this.disabled    = true;
-    this.textContent = 'Saving...';
+      this.disabled = true;
+      this.textContent = "Saving...";
 
-    try {
-      const updated = await NoteifyAPI.updateProfile(payload);
-      currentUser = updated;
-      syncAllAvatars();
-      UIManager.showNotification('Profile updated!', 'success');
-      closeModal();
-    } catch (err) {
-      UIManager.showNotification(err.message || 'Update failed.', 'error');
-    } finally {
-      this.disabled    = false;
-      this.textContent = 'Save Changes';
-    }
-  });
+      try {
+        const updated = await NoteifyAPI.updateProfile(payload);
+        currentUser = updated;
+        syncAllAvatars();
+        UIManager.showNotification("Profile updated!", "success");
+        closeModal();
+      } catch (err) {
+        UIManager.showNotification(err.message || "Update failed.", "error");
+      } finally {
+        this.disabled = false;
+        this.textContent = "Save Changes";
+      }
+    });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   syncAllAvatars();
 });

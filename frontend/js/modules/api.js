@@ -124,19 +124,20 @@ const NoteifyAPI = {
 
     // ── Profile ───────────────────────────────────────────────────────────
 
-    async updateProfile({ name, email, password, avatar } = {}) {
-        const body = {};
-        if (name     !== undefined) body.name     = name;
-        if (email    !== undefined) body.email    = email;
-        if (password !== undefined) body.password = password;
-        if (avatar   !== undefined) body.avatar   = avatar;
+    async updateProfile({ name, email, password, avatarFile } = {}) {
+        const formData = new FormData();
+        if (name)       formData.append('name', name);
+        if (email)      formData.append('email', email);
+        if (password)   formData.append('password', password);
+        if (avatarFile) formData.append('avatar', avatarFile);
 
+        const token = localStorage.getItem('noteify_token');
         const res = await fetch(`${API_BASE}/auth/update_profile.php`, {
-            method: 'POST', headers: this._headers(),
-            body: JSON.stringify(body)
+            method: 'POST',
+            headers: { 'Authorization': token ? `Bearer ${token}` : '' },
+            body: formData
         });
         const data = await this._json(res);
-        // Keep localStorage in sync
         localStorage.setItem('currentUser', JSON.stringify(data.user));
         return data.user;
     }
