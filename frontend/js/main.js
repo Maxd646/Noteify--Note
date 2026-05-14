@@ -1,5 +1,7 @@
 // Noteify Main Application
 
+// Noteify Main Application
+
 // Global Variables
 let notes = [];
 let filteredNotes = [];
@@ -37,27 +39,21 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeApp();
 });
 
-function initializeApp() {
-  // Display welcome message
+async function initializeApp() {
   UIManager.displayWelcomeMessage(currentUser.name);
 
-  // Load user data
-  loadUserData();
+  await loadUserData();
 
-  // Setup event listeners
   setupEventListeners();
 
-  // Initial render
   renderNotes();
   UIManager.updateNotesCount(notes.length);
 
-  // If opened from file viewer to edit a specific note, handle it now
   try {
     const openId = localStorage.getItem("openNoteIdForEdit");
     if (openId) {
       const idx = notes.findIndex((n) => String(n.id) === String(openId));
       if (idx >= 0) {
-        // open edit modal for this note
         editingIndex = idx;
         modalTitle.textContent = "Edit Note";
         noteTitle.value = notes[idx].title;
@@ -73,11 +69,17 @@ function initializeApp() {
   console.log("Noteify app initialized successfully");
 }
 
-function loadUserData() {
-  notes = StorageManager.loadUserNotes(currentUser.id);
-  filteredNotes = [...notes];
+async function loadUserData() {
+  try {
+    notes = await NoteifyAPI.getNotes();
+    filteredNotes = [...notes];
+  } catch (err) {
+    console.error('Failed to load notes:', err);
+    UIManager.showNotification('Failed to load notes', 'error');
+    notes = [];
+    filteredNotes = [];
+  }
 
-  // Load scratch pad
   if (scratchPad) {
     const scratchContent = StorageManager.loadScratchPad(currentUser.id);
     scratchPad.value = scratchContent;
@@ -100,6 +102,42 @@ function setupEventListeners() {
       UIManager.debounce(() => {
         StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
       }, 1000),
+    );
+  }
+
+  // Sort functionality
+  const sortSelect = document.getElementById("sortSelect");
+  if (sortSelect) {
+    sortSelect.addEventListener("change", function () {
+      sortBy = this.value;
+      renderNotes();
+    });
+  }
+
+  // Modal close on outside click
+  if (noteModal) {
+    noteModal.addEventListener("click", function (e) {
+      if (e.target === noteModal) {
+        closeModal();
+      }
+    });
+  }
+
+  // Templates modal
+  const templatesModal = document.getElementById("templatesModal");
+  if (templatesModal) {
+    templatesModal.addEventListener("click", function (e) {
+      if (e.target === templatesModal) {
+        TemplatesManager.closeTemplatesModal();
+      }
+    });
+  }
+
+  const closeTemplatesBtn = document.getElementById("closeTemplatesBtn");
+  if (closeTemplatesBtn) {
+    closeTemplatesBtn.addEventListener(
+      "click",
+      TemplatesManager.closeTemplatesModal,
     );
   }
 
