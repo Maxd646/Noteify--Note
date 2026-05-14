@@ -1,6 +1,9 @@
 // Noteify Main Application
 
 // Global Variables
+// Noteify Main Application
+
+// Global Variables
 let notes = [];
 let filteredNotes = [];
 let editingIndex = null;
@@ -37,21 +40,107 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeApp();
 });
 
-function initializeApp() {
-  // Display welcome message
+async function initializeApp() {
   UIManager.displayWelcomeMessage(currentUser.name);
 
-  // Load user data
-  loadUserData();
+  await loadUserData();
 
-  // Setup event listeners
   setupEventListeners();
 
-  // Initial render
   renderNotes();
   UIManager.updateNotesCount(notes.length);
 
-  // If opened from file viewer to edit a specific note, handle it now
+  try {
+    const openId = localStorage.getItem("openNoteIdForEdit");
+    if (openId) {
+      const idx = notes.findIndex((n) => String(n.id) === String(openId));
+      if (idx >= 0) {
+        editingIndex = idx;
+        modalTitle.textContent = "Edit Note";
+        noteTitle.value = notes[idx].title;
+        noteBody.value = notes[idx].body;
+        UIManager.showModal(noteModal);
+      }
+      localStorage.removeItem("openNoteIdForEdit");
+    }
+  } catch (e) {
+    console.warn("Could not process openNoteIdForEdit", e);
+  }
+
+  console.log("Noteify app initialized successfully");
+}
+
+async function loadUserData() {
+  try {
+    notes = await NoteifyAPI.getNotes();
+    filteredNotes = [...notes];
+  } catch (err) {
+    console.error('Failed to load notes:', err);
+    UIManager.showNotification('Failed to load notes', 'error');
+    notes = [];
+    filteredNotes = [];
+  }
+
+  if (scratchPad) {
+    const scratchContent = StorageManager.loadScratchPad(currentUser.id);
+    scratchPad.value = scratchContent;
+  }
+}
+
+function setupEventListeners() {
+  // Note operations
+  addNoteBtn.addEventListener("click", openNewNoteModal);
+  saveNoteBtn.addEventListener("click", saveNote);
+  closeModalBtn.addEventListener("click", closeModal);
+
+  // Search functionality
+  searchInput.addEventListener("input", UIManager.debounce(handleSearch, 300));
+
+  // Scratch pad auto-save
+  if (scratchPad) {
+    scratchPad.addEventListener(
+      "input",
+      UIManager.debounce(() => {
+        StorageManager.saveScratchPad(currentUser.id, scratchPad.value);
+      }, 1000),
+    );
+  }
+
+  // Sort functionality
+  const sortSelect = document.getElementById("sortSelect");
+  if (sortSelect) {
+    sortSelect.addEventListener("change", function () {
+      sortBy = this.value;
+      renderNotes();
+    });
+  }
+
+  // Modal close on outside click
+  if (noteModal) {
+    noteModal.addEventListener("click", function (e) {
+      if (e.target === noteModal) {
+        closeModal();
+      }
+    });
+  }
+
+  // Templates modal
+  const templatesModal = document.getElementById("templatesModal");
+  if (templatesModal) {
+    templatesModal.addEventListener("click", function (e) {
+      if (e.target === templatesModal) {
+        TemplatesManager.closeTemplatesModal();
+      }
+    });
+  }
+
+  const closeTemplatesBtn = document.getElementById("closeTemplatesBtn");
+  if (closeTemplatesBtn) {
+    closeTemplatesBtn.addEventListener(
+      "click",
+      TemplatesManager.closeTemplatesModal,
+    );
+  }  // If opened from file viewer to edit a specific note, handle it now
   try {
     const openId = localStorage.getItem("openNoteIdForEdit");
     if (openId) {
